@@ -2,7 +2,6 @@ import os
 
 class Tree:
 	current = None
-	relTable = {}
 
 	def __init__(self, name="root", nodeType="d"):
 		self.name = name
@@ -15,6 +14,7 @@ class Tree:
 		self.currentDir = [self.path]
 		self.sysDir = os.getenv("HOME")		
 		self.relTable = {self.path:self.sysDir}
+		self.names = {"d":[],"f":[]}
 		print(self.relTable)
 
 
@@ -24,12 +24,13 @@ class Tree:
 		return self.root.home()
 
 	def create(self, name, nodeType, files = None):
-		# for x in self.current.files:
-		# 	if name+"/"  self.current.files:
-
-		new = Tree(name, nodeType)
-		self.current.files.append(new)
-		new.root = self.current
+		if name in self.names[nodeType]:
+			print("There is a file with that name.")
+		else:
+			self.names[nodeType].append(name)
+			new = Tree(name, nodeType)
+			self.current.files.append(new)
+			new.root = self.current
 
 	def rm(self,name):
 		for fileSearched in self.files:
