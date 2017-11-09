@@ -18,6 +18,8 @@ s.bind((host,port))
 #Specify how many requests will listen at the same time (queue) -> socket.listen(backlog), min=0, max=5 (system dependent)
 s.listen(5)
 
+print("Server starded")
+
 while True:
 	#Establish connection -> socket.accept() retunrs a pair value (conn,address) where conn is a new socket object (to send and recieve data on the connection) and address is the adress bound to the socket on the other end of the connection.
 	#.accept() creates a new socket used to communicate with it. In TCP servers, this is not the case, the socket created here is only used to returns a new socket.
@@ -33,4 +35,5 @@ while True:
 	clientSocket.send(cTime.encode('ascii'))
 
 	#Close the connection -> socket.close(), mark the socket closed, all future operations on the socket object will fail.
-	clientSocket.close()
+clientSocket.close()
+
