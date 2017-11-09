@@ -15,8 +15,8 @@ class Tree:
 		self.sysDir = os.getenv("HOME")		
 		self.relTable = {self.path:self.sysDir}
 		self.names = {"d":[],"f":[]}
+		self.users = {"root":"1234"}
 		print(self.relTable)
-
 
 	def home(self):
 		if self.root == None:
@@ -59,4 +59,13 @@ class Tree:
 					else:
 						print("Please enter a valid directory.")
 
+	def login(self, user, password):
+		for u in self.users.keys():
+			if u == user:
+				if password == self.users[user]:
+					return True
+				print("Incorrect password.")
+				return False
+		print("User not found.")
+		return False
 
