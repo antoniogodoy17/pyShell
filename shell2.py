@@ -3,7 +3,7 @@ import os
 import vfs as VFS 
 import lfs 
 
-cmdDic = {'init': 'Initialize the Virtual File System','cd':'Enters to a specified directory','makedir':'Creates a new directory','makefile':'Creates a new file','remove':'Removes a file or an entire directory','li':'List all items of the current directory','cls':'Clean command line','quit':'Exit from shell','help':'List commands, description and syntax'}
+cmdDic = {'init': 'Initialize the Virtual File System','cd':'Enters to a specified directory','makedir':'Creates a new directory','makefile':'Creates a new file','remove':'Removes a file or an entire directory','li':'List all items of the current directory','cls':'Clean command line','quit':'Exit from shell','help':'List commands, description and syntax','rmdir':''}
 
 class shell:
 	def __init__(self):
@@ -29,7 +29,8 @@ class shell:
 			if cmd == 'makedir':
 				if args != None:
 					name = args[0]
-					self.vfs.create(name,"d")
+					#self.vfs.create(name,"d")
+					lfs.makeDir(name)
 				else:
 					print("Invalid arguments were given.")
 
@@ -61,6 +62,10 @@ class shell:
 					# for directory in self.vfs.currentDir:
 					# 	self.cls += directory
 					# self.cls += "$:"
+
+			if cmd == 'rmdir':
+				if args != None:
+					lfs.removeDir(args[0])
 
 	def prompt(self):
 		cmd = ''

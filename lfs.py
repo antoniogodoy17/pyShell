@@ -1,4 +1,5 @@
 import os
+import shutil
 
 termid = os.ctermid() #Return the filename corresponding to the controlling terminal of the process
 home = os.environ['HOME']
@@ -40,6 +41,13 @@ def li():
 	      print(os.path.join(root, name))
 	   for name in dirs:
 	      print(os.path.join(root, name))
+
+def makeDir(arg):		
+	os.mkdir(arg,0o777)
+
+def removeDir(arg):
+	shutil.rmtree(arg, ignore_errors=False, onerror=None)
+		
 # class Tree:
 # 	current = None
 
