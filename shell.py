@@ -15,7 +15,6 @@ class shell:
 		self.currentUser = None
 
 	def run(self,c):
-		self.state = "alive"
 		self.socket = c
 		self.prompt()
 
@@ -30,6 +29,13 @@ class shell:
 					self.vfs = VFS.Tree()
 					print("VFS Initialized on " + self.vfs.home().path)
 			else:
+				if cmd == 'cls':
+					os.system('clear')
+
+				if cmd == 'help':
+					for command in cmdDic.keys(): 
+						print("\t"+ command + "\t" + str(cmdDic[command]))
+
 				if self.vfs!=None:
 					if self.currentUser == None:
 						print("No user with privileges signed in. Please enter your user and password.")
@@ -77,24 +83,16 @@ class shell:
 									self.cls += directory
 								self.cls += "$:"
 
-				if cmd == 'cls':
-					os.system('clear')
 
-				if cmd == 'help':
-					for command in cmdDic.keys(): 
-						print("\t"+ command + "\t" + str(cmdDic[command]))
-
-			if cmd == 'quit':
-				self.state = "death"
-				print("\nLog out from shell successfull.")
 
 	def prompt(self):
-		while self.state == "alive":
+		cmd = ''
+		while cmd != 'quit':
 			instruction = raw_input(self.cls)
 			cmd = instruction.split()[0]
 			if len(instruction.split()) > 1:
 				args = instruction.split()[1:]
 			else:
 				args = None
-
 			self.findCommand(cmd,args)
+		print("\nLog out from shell successfull.")
