@@ -1,9 +1,10 @@
 import os
+import stat
 import shutil
 
-termid = os.ctermid() #Return the filename corresponding to the controlling terminal of the process
-home = os.environ['HOME']
-cwd = os.getcwd()
+# termid = os.ctermid() #Return the filename corresponding to the controlling terminal of the process
+# home = os.environ['HOME']
+# cwd = os.getcwd()
 #os.listdir(path=".") return a list containing the names of the entries in the directory given.
 #os.chdir(path): change the current working directory to path
 #os.mkdir(path,mode=0o777,*,dir_fd=None)
@@ -13,7 +14,6 @@ cwd = os.getcwd()
 #os.walk(top,topdown=True,onerror=None,followlinks=False) returns 3-tuple(dirpath, dirnames, filenames), dirpath is a string path to directory
 
 cmdDic = {'init': 'Initialize the Virtual File System','cd':'Enters to a specified directory','makedir':'Creates a new directory','makefile':'Creates a new file','remove':'Removes a file or an entire directory','li':'List all items of the current directory','cls':'Clean command line','quit':'Exit from shell','help':'List commands, description and syntax'}
-
 
 def getcwd():
 	print(os.getcwd())
@@ -36,18 +36,23 @@ def cd(arg):
 		os.chdir(os.getcwd() + "/" + arg)
 		#Evitar que crhasee hacia adelante cuando no existe carpeta o archivo
 def li():
-	for  root, dirs, files in os.walk(str(os.getcwd()), topdown=False):
-	   for name in files:
-	      print(os.path.join(root, name))
-	   for name in dirs:
-	      print(os.path.join(root, name))
+	items = os.listdir(".")
+	print("\nFiles:")
+	for item in items:
+		print("\t"+item)
+	print("\n")
+
+def makefile(name):
+	os.mknod(name,0o600,stat.S_IRUSR)
+
+def removeFile(name):
+	os.remove(name)
 
 def makeDir(arg):		
 	os.mkdir(arg,0o777)
 
 def removeDir(arg):
 	shutil.rmtree(arg, ignore_errors=False, onerror=None)
-		
 # class Tree:
 # 	current = None
 

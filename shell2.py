@@ -3,7 +3,7 @@ import os
 import vfs as VFS 
 import lfs 
 
-cmdDic = {'init': 'Initialize the Virtual File System','cd':'Enters to a specified directory','makedir':'Creates a new directory','makefile':'Creates a new file','remove':'Removes a file or an entire directory','li':'List all items of the current directory','cls':'Clean command line','quit':'Exit from shell','help':'List commands, description and syntax','rmdir':''}
+cmdDic = {'init': 'Initialize the Virtual File System','cd':'Enters to a specified directory','makedir':'Creates a new directory','makefile':'Creates a new file','remove':'Removes a file or an entire directory','li':'List all items of the current directory','cls':'Clean command line','quit':'Exit from shell','help':'List commands, description and syntax','rmfile' : 'Removes a file', 'rmdir':'Removes a Directory'}
 
 class shell:
 	def __init__(self):
@@ -29,43 +29,35 @@ class shell:
 			if cmd == 'makedir':
 				if args != None:
 					name = args[0]
-					#self.vfs.create(name,"d")
-					lfs.makeDir(name)
+					lfs.makedir(name)
 				else:
 					print("Invalid arguments were given.")
+
+			if cmd == 'rmdir':
+				if args != None:
+					name = args[0]
+					lfs.removeDir(name)
 
 			if cmd == 'makefile':
 				if args != None:
 					name = args[0]
-					self.vfs.create(name,"f")
+					lfs.makefile(name)
 				else:
 					print("Invalid arguments were given.")
 
-			if cmd == 'remove':
+			if cmd == 'rmfile':
 				if args != None:
 					name = args[0]
-					if self.vfs.remove(name) == False:
-						print("ERROR: No such file " + name + "found in current directory.")
-					else:
-						print(name + " was removed succesfully.")
+					lfs.removeFile(name)
 				else:
 					print("Invalid arguments were given.")
 
 			if cmd == 'li':
 				lfs.li()
+
 			if cmd == 'cd':
 				if args != None:
 					lfs.cd(args[0])
-					# directory = args[0]
-					# self.vfs.cd(directory)
-					# self.cls = "shell/"
-					# for directory in self.vfs.currentDir:
-					# 	self.cls += directory
-					# self.cls += "$:"
-
-			if cmd == 'rmdir':
-				if args != None:
-					lfs.removeDir(args[0])
 
 	def prompt(self):
 		cmd = ''
