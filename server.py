@@ -25,7 +25,7 @@ while True:
 	#.accept() creates a new socket used to communicate with it. In TCP servers, this is not the case, the socket created here is only used to returns a new socket.
 	(clientSocket,addr) = s.accept()
 
-	print("Connection with %s: successful." %str(addr))
+	print("%s. Connection with %s: successful." %(time.ctime(time.time()), str(addr)))
 
 	#Get system current time
 	cTime = time.ctime(time.time()) + "\r\n"
