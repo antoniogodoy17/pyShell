@@ -28,6 +28,8 @@ class Coordinator:
         #AF_INET address family
         #SOCK_STREAM socket type (STREAM is quick and usefull)
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #Get local machine name
         self.host = '127.0.0.1'#socket.gethostname()
         #Declare the port
@@ -41,22 +43,24 @@ class Coordinator:
         while True:
             #Establish connection -> socket.accept() retunrs a pair value (conn,address) where conn is a new socket object (to send and recieve data on the connection) and address is the adress bound to the socket on the other end of the connection.
             #.accept() creates a new socket used to communicate with it. In TCP servers, this is not the case, the socket created here is only used to returns a new socket.
-            (clientSocket,addr) = self.s.accept()
+            #(clientSocket,addr) = self.s.accept()
+            self.client = self.s.accept()
             logging.debug("Client connected: %s." %str(addr))
             
             while True:
-                msgRecv = clientSocket.recv(1024)
+                # msgRecv = clientSocket.recv(1024)
+                msgRecv = self.client.recv(1024)
                 if not msgRecv: 
                     break
                 logging.debug("Message Received From %s." %str(addr))
                 message = Message()
-                message = message.marshal(msgRecv)
+                message = message.marshal(msgRecv,addr)
                 if not self.queue.full():
                     self.cv.acquire()
                     self.put(message)
                     self.cv.notify()
                     self.cv.release()
-            
+                
             #Close the connection -> socket.close(), mark the socket closed, all future operations on the socket object will fail.
             clientSocket.close()
 
@@ -67,8 +71,10 @@ class Coordinator:
                 self.cv.wait()
             msg = self.get()
             self.cv.release()
-            logging.debug('Command Received: %s' %str(msg.cmd))
+            logging.debug('Command Received: %s from %s' %(str(msg.cmd),str(msg.sender)))
             #
+            (client,address) = msg.sender
+            client.sendall(b"hola")
             if msg.type == "user":
                 uCmd = ULC()
                 uCmd.execute(msg)

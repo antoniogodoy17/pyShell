@@ -6,12 +6,16 @@ class Message:
 		#self.payLoad{
 		#
 		#}
+		self.sender = "None"
 		self.type = "None"
 		self.cmd = "None"
 		self.options = "None"
 		self.file = "None"
 		self.path = "None"
 		self.category = "None"
+
+	def setSender(self,entry):
+		self.sender = entry
 
 	def setType(self,entry):
 		self.type = entry
@@ -31,6 +35,9 @@ class Message:
 	def setCategory(self,entry):
 		self.category = entry
 
+	def sender(self):
+		return self.sender
+
 	def type(self):
 		return self.type
 
@@ -49,7 +56,7 @@ class Message:
 	def category(self):
 		return self.category
 
-	def marshal(self,json):
+	def marshal(self,json,address):
 		#Recibe una cadena y la transforma a un objeto Message
 		values = []
 		json = json[1:-1]
@@ -60,18 +67,19 @@ class Message:
 			value = item.split(':')[1]
 			values.append(value)
 
-		message.setType(values[0])
-		message.setCmd(values[1])
-		message.setOptions(values[2])
-		message.setFile(values[3])
-		message.setPath(values[4])	
-		message.setCategory(values[5])
+		message.setSender(address)
+		message.setType(values[1])
+		message.setCmd(values[2])
+		message.setOptions(values[3])
+		message.setFile(values[4])
+		message.setPath(values[5])	
+		message.setCategory(values[6])
 
 		return message
 
 	def demarshal(self,message):
 		#Recibe un objeto Message y lo transforma a una cadena tipo json
-		json = "{"+"'type':" + str(message.type) +"," +"'cmd':" + str(message.cmd) + "," + "'options':" + str(message.options) + "," +"'file':" + str(message.file) + "," +"'path':" + str(message.path) + "," + "'category':" + str(message.category) + "}"
+		json = "{'from:'" + str(msg.sender) + "," + "'type':" + str(message.type) +"," +"'cmd':" + str(message.cmd) + "," + "'options':" + str(message.options) + "," +"'file':" + str(message.file) + "," +"'path':" + str(message.path) + "," + "'category':" + str(message.category) + "}"
 		return json
 
 	def parse(self,string):
@@ -80,16 +88,16 @@ class Message:
 		if cmd == 'cls':
 			instruction = string.split()
 			cmdType = "user"
-			json = "{'type':" + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':None,'category':None}"
+			json = "{'from':None,'type':"  + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':None,'category':None}"
 			return json
 
 		if cmd == 'help':
 			instruction = string.split()
 			cmdType = "user"
-			json = "{'type':" + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':None,'category':None}"
+			json = "{'from':None,'type':"  + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':None,'category':None}"
 			return json
 
-		if cmd in ('makedir','rmdir','makefile'):
+		if cmd in ('makedir','rmdir','makefile','rmfile'):
 			instruction = string.split()
 			args = "None"
 			if len(instruction)>1:
@@ -101,14 +109,14 @@ class Message:
 			if len(args) > 1:
 				path = args[0]
 
-			json = "{'type':" + cmdType +",'cmd':" + cmd + ",'options':None,'file':" + fileName + ",'path':" + path + ",'category':None}"
+			json = "{'from':None,'type':"  + cmdType +",'cmd':" + cmd + ",'options':None,'file':" + fileName + ",'path':" + path + ",'category':None}"
 			return json
 
 		if cmd == 'li':
 			instruction = string.split()
 			cmdType = "system"
 			
-			json = "{'type':" + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':None,'category':None}"
+			json = "{'from':None,'type':" + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':None,'category':None}"
 			return json
 
 		if cmd == 'cd':
@@ -120,12 +128,12 @@ class Message:
 			cmdType = "system"
 			path = args[0]
 
-			json = "{'type':" + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':" + path + ",'category':None}"
+			json = "{'from':None,'type':"  + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':" + path + ",'category':None}"
 			return json
 
 		if cmd == 'cwd':
 			instruction = string.split()
 			cmdType = "system"
 			
-			json = "{'type':" + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':None,'category':None}"
+			json = "{'from':None,'type':" + cmdType +",'cmd':" + cmd + ",'options':None,'file':None,'path':None,'category':None}"
 			return json

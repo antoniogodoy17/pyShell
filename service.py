@@ -3,6 +3,7 @@ from message import Message
 import os
 import shutil
 import stat
+from ktree import Ktree
 
 cmdDic = {'cd':'Enters to a specified directory','makedir':'Creates a new directory','makefile':'Creates a new file','remove':'Removes a file or an entire directory','li':'List all items of the current directory','cls':'Clean command line','quit':'Exit from shell','help':'List commands, description and syntax'}
 
@@ -16,63 +17,74 @@ class Service(object):
 class ULC(Service):
 
 	def execute(self,msg):
-		if msg.cmd == 'cls':
-			print("soy un cls")
-			os.system('clear')
+		pass
+		#LLamadas a sistema relacionadas con la tarjeta de video se 
+		#ejecutan en la consola del coordinador
+		#Etiquetar al mensaje para saber de donde proviene y
+		#que pueda enviar el mensaje al shell
 
-		if msg.cmd == 'help':
-			print("\n\tCommand : Description")
-			for command in cmdDic.keys(): 
-				print("\t"+ command + " : " + str(cmdDic[command]))
-			print("\n")
+		# if msg.cmd == 'cls':
+		# 	print("soy un cls")
+		# 	#os.system('clear')
 
-		if msg.cmd == 'makedir':
-			#Obtener los argumentos del mensaje
-			if args != None:
-				os.mkdir(name,0o777)
-			else:
-				print("Invalid arguments were given.")
+		# if msg.cmd == 'help':
+		# 	print("\n\tCommand : Description")
+		# 	for command in cmdDic.keys(): 
+		# 		print("\t"+ command + " : " + str(cmdDic[command]))
+		# 	print("\n")
 
-		if msg.cmd == 'rmdir':
-			#Obtener los argumentos del mensaje
-			if args != None:
-				shutil.rmtree(args, ignore_errors=False, onerror=None)
-
-		if msg.cmd == 'makefile':
-			if args != None:
-				os.mknod(args,0o600,stat.S_IRUSR)
-			else:
-				print("Invalid arguments were given.")
-
-		if msg.cmd == 'rmfile':
-			if args != None:
-				os.remove(args)
-			else:
-				print("Invalid arguments were given.")
-
-		if msg.cmd == 'li':
-			items = os.listdir(".")
-			print("\nFiles:")
-			for item in items:
-				print("\t"+item)
-			print("\n")
-
-		if msg.cmd == 'cd':
-			if args != None:
-				if arg == '..':
-					path = os.getcwd().rsplit("/",1)[0]
-					os.chdir(path)
-					#Evitar que home suba y crashee
-				else:
-					os.chdir(os.getcwd() + "/" + arg)
-					#Evitar que crhasee hacia adelante cuando no existe carpeta o archivo
-		if msg.cmd == 'cwd':
-			print(os.getcwd())
+		# if msg.cmd == 'li':
+		# 	items = os.listdir(".")
+		# 	print("\nFiles:")
+		# 	for item in items:
+		# 		print("\t"+item)
+		# 	print("\n")
+	
+		# if msg.cmd == 'cwd':
+		# 	print(os.getcwd())
 
 class SLC(Service):
 
-	def execute(self,msg):
-		print("Executing SLC")
+	def execute(self,msg):	
+		if msg.file != "None":
+			if msg.path != "None":
+				passs
+				# if msg.cmd == 'makedir':
+				# 	os.mkdir(msg.file,0o777)
+				# elif msg.cmd == 'rmdir':
+				# 	shutil.rmtree(msg.file, ignore_errors=False, onerror=None)
+				# elif msg.cmd == 'makefile':
+				# 	os.mknod(msg.file,0o600,stat.S_IRUSR)
+				# elif msg.cmd == 'rmfile':
+				# 	os.remove(msg.file)
+				# elif msg.cmd == 'cd':
+				# 	if arg == '..':
+				# 		path = os.getcwd().rsplit("/",1)[0]
+				# 		os.chdir(path)
+				# 		#Evitar que home suba y crashee
+				# 	else:
+				# 		os.chdir(os.getcwd() + "/" + msg.file)
+				# 		#Evitar que crhasee hacia adelante cuando no existe carpeta o archivo
+			else:
+				if msg.cmd == 'makedir':
+					os.mkdir(msg.file,0o777)
+				elif msg.cmd == 'rmdir':
+					shutil.rmtree(msg.file, ignore_errors=False, onerror=None)
+				elif msg.cmd == 'makefile':
+					os.mknod(msg.file,0o600,stat.S_IRUSR)
+				elif msg.cmd == 'rmfile':
+					os.remove(msg.file)
+				elif msg.cmd == 'cd':
+					if arg == '..':
+						path = os.getcwd().rsplit("/",1)[0]
+						os.chdir(path)
+						#Evitar que home suba y crashee
+					else:
+						os.chdir(os.getcwd() + "/" + msg.file)
+						#Evitar que crhasee hacia adelante cuando no existe carpeta o archivo
+		else:
+			print('Invalid arguments were given')
+
 
 class CLC(Service):
 
