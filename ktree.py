@@ -6,7 +6,7 @@ class Ktree:
 	def __init__(self, name="root", nodeType="d"):
 		self.name = name
 		self.nodeType = nodeType
-		self.root = None
+		self.root = Nones
 		self.files = []
 		self.path = "home/"#os.getenv("HOME") 
 		self.ext = None
@@ -58,7 +58,6 @@ class Ktree:
 						self.current = node
 					else:
 						print("Please enter a valid directory.")
-
 	# def login(self, user, password):
 	# 	for u in self.users.keys():
 	# 		if u == user:

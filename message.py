@@ -2,10 +2,6 @@
 #{'type':user/system/control, 'cmd': , 'category':none/vote/confirmation, 'args': }
 class Message:
 	def __init__(self):
-		#self.contrl{type: }
-		#self.payLoad{
-		#
-		#}
 		self.sender = "None"
 		self.type = "None"
 		self.cmd = "None"
