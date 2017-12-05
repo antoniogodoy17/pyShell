@@ -17,6 +17,7 @@ host = '127.0.0.1'#socket.gethostname()
 
 #Declare the port
 port = 9000
+
 #Connection to hostname on the declared port
 c.connect((host,port))
 
@@ -26,7 +27,7 @@ def prompt():
 		clb = "user@:~" + os.getcwd() + "/$ " 
 		instruction = raw_input(clb)
 		cmd = instruction.split()[0]
-		
+
 		if cmd not in cmdDic:
 			print("ERROR: Command not found. \nIf assistance is needed, type the 'help' command.")
 		elif cmd == 'quit':

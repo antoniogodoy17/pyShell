@@ -23,6 +23,7 @@ class Coordinator:
         self.queue = q
         self.cv = cv
 
+
     def communicator(self):
         #Create the server socket object -> socket.socket()
         #AF_INET address family
@@ -45,7 +46,6 @@ class Coordinator:
             logging.debug("Client connected: %s." %str(addr))
 
             while True:
-                pass
                 msgRecv = clientSocket.recv(1024)
                 if not msgRecv: 
                      break
@@ -80,7 +80,7 @@ class Coordinator:
             else: #Type = "Control"
                 cCmd = CLC()
                 cCmd.execute(msg)
-
+                               
     def put(self,msg):
         logging.debug('Putting command: %s' %str(msg.cmd))
         self.queue.put(msg)

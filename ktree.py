@@ -6,7 +6,7 @@ class Ktree:
 	def __init__(self, name="root", nodeType="d"):
 		self.name = name
 		self.nodeType = nodeType
-		self.root = Nones
+		self.root = None
 		self.files = []
 		self.path = "home/"#os.getenv("HOME") 
 		self.ext = None
