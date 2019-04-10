@@ -1,2 +1,2 @@
-# FileSystem
-File system program in Python and Ubuntu.
+# pyShell
+Shell like program made in Python.
